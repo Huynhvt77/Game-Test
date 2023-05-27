@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class RandomColor : MonoBehaviour
 {
-    private List<material.Color> = {Coloer.red, Coloer.blue, color.}
-    // Start is called before the first frame update
-    private void Start()
+    public Color[] colors = {Color.red, Color.blue, Color.green}; // M?ng ch?a các màu ??, l?c và lam
+    public static Color playerColor;
+    void Start()
     {
-        
-    }
+        // Ch?n m?t màu ng?u nhiên trong m?ng colors
+        int randomIndex = Random.Range(0, colors.Length);
+        playerColor  = colors[randomIndex];
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Thi?t l?p màu cho v?t th?
+        Renderer renderer = GetComponent<Renderer>();
+        renderer.material.color = playerColor;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class RespawnBall : MonoBehaviour
@@ -7,9 +8,11 @@ public class RespawnBall : MonoBehaviour
     public float respawnDelay = 1f; // Thời gian chờ để vật thể xuất hiện lại
     private Vector3 initialPosition; // Vị trí ban đầu của vật thể
     public static int scorePlayer = 0;
+    MeshRenderer mr;
     private void Start()
     {
         initialPosition = transform.position; // Lưu vị trí ban đầu của vật thể
+        mr = GetComponent<MeshRenderer>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -21,11 +24,32 @@ public class RespawnBall : MonoBehaviour
             gameObject.SetActive(false);
             // Gọi hàm để vật thể xuất hiện lại sau một khoảng thời gian
             Invoke("Respawn", respawnDelay);
-            scorePlayer++;
-            Debug.Log("Score: " + scorePlayer);
+
+            if (RandomColor.playerColor == mr.material.color)
+            {
+                scorePlayer++;
+                Debug.Log("Score: " + scorePlayer);
+                if (scorePlayer == 10)
+                    WinStatus();
+            }
+            else
+            {
+                DefeatStatus();
+            }
+            
         }
     }
 
+    void WinStatus()
+    {
+        Debug.Log("Win");
+    }
+
+    void DefeatStatus()
+    {
+        Debug.Log("Defeat");
+        Debug.Log("Score: " + scorePlayer);
+    }
     private void Respawn()
     {
         // Đặt lại vị trí của vật thể
