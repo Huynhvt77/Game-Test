@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScorePlayer : MonoBehaviour
 {
     private int score = 0; // Điểm số hiện tại
+    public Text scoreText; // Tham chiếu đến Text GameObject
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -14,8 +16,8 @@ public class ScorePlayer : MonoBehaviour
             // Tăng điểm lên 1
             score++;
 
-            // In ra điểm số ở góc camera
-            Debug.Log("Điểm số: " + score, Camera.main.gameObject);
+            // Cập nhật nội dung của Text GameObject
+            scoreText.text = "Score: " + score;
         }
     }
 }
