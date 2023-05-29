@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RespawnBall : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class RespawnBall : MonoBehaviour
         initialPosition = transform.position; // Lưu vị trí ban đầu của vật thể
         mr = GetComponent<MeshRenderer>();
     }
+
+    
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -42,13 +46,12 @@ public class RespawnBall : MonoBehaviour
 
     void WinStatus()
     {
-        Debug.Log("Win");
+        SceneManager.LoadScene("WinScene");
     }
 
     void DefeatStatus()
     {
-        Debug.Log("Defeat");
-        Debug.Log("Score: " + scorePlayer);
+        SceneManager.LoadScene("LoseScene");
     }
     private void Respawn()
     {
