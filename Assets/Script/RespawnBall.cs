@@ -9,8 +9,12 @@ public class RespawnBall : MonoBehaviour
 {
     public float respawnDelay = 1f; // Thời gian chờ để vật thể xuất hiện lại
     private Vector3 initialPosition; // Vị trí ban đầu của vật thể
-    public static int scorePlayer = 0;
+    public int scorePlayer = 0;
     MeshRenderer mr;
+    public Text scoreText;
+
+    public System.Action<int> OnScoreChanged { get; internal set; }
+
     private void Start()
     {
         initialPosition = transform.position; // Lưu vị trí ban đầu của vật thể
@@ -32,9 +36,12 @@ public class RespawnBall : MonoBehaviour
             if (RandomColor.playerColor == mr.material.color)
             {
                 scorePlayer++;
-                Debug.Log("Score: " + scorePlayer);
                 if (scorePlayer == 10)
                     WinStatus();
+                else
+                {
+                    scoreText.text = scorePlayer.ToString();
+                }
             }
             else
             {
