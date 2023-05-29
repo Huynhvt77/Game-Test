@@ -5,32 +5,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class RespawnBall : MonoBehaviour
+public class Ball : MonoBehaviour
 {
-    public float respawnDelay = 1f; // Thời gian chờ để vật thể xuất hiện lại
-    private Vector3 initialPosition; // Vị trí ban đầu của vật thể
-    public int scorePlayer = 0;
+    [SerializeField] float respawnDelay = 1f;
+    [SerializeField] int scorePlayer = 0;
+    [SerializeField] Text scoreText;
+    private float bound = 19.0f;
     MeshRenderer mr;
-    public Text scoreText;
-
+    
     public System.Action<int> OnScoreChanged { get; internal set; }
 
     private void Start()
     {
-        initialPosition = transform.position; // Lưu vị trí ban đầu của vật thể
         mr = GetComponent<MeshRenderer>();
     }
 
-    
-
     private void OnCollisionEnter(Collision collision)
     {
-        // Kiểm tra va chạm với vật thể khác
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Vô hiệu hóa vật thể
             gameObject.SetActive(false);
-            // Gọi hàm để vật thể xuất hiện lại sau một khoảng thời gian
+
             Invoke("Respawn", respawnDelay);
 
             if (RandomColor.playerColor == mr.material.color)
@@ -39,41 +34,33 @@ public class RespawnBall : MonoBehaviour
                 if (scorePlayer == 10)
                     WinStatus();
                 else
-                {
                     scoreText.text = scorePlayer.ToString();
-                }
             }
             else
             {
                 DefeatStatus();
             }
-            
         }
     }
 
-    void WinStatus()
+    private void WinStatus()
     {
-        SceneManager.LoadScene("WinScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene");
     }
 
-    void DefeatStatus()
+    private void DefeatStatus()
     {
-        SceneManager.LoadScene("LoseScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LoseScene");
     }
     private void Respawn()
     {
-        // Đặt lại vị trí của vật thể
         transform.position = GetRandomPosition();
-
-        // Kích hoạt vật thể
         gameObject.SetActive(true);
     }
 
     private Vector3 GetRandomPosition()
     {
-        // Lấy ngẫu nhiên vị trí mới trên mặt phẳng (plane)
-        // Bạn có thể tùy chỉnh giới hạn và cách lấy vị trí ngẫu nhiên tại đây
-        Vector3 randomPosition = new Vector3(Random.Range(-4f, 4f), 0.5f, Random.Range(-4f, 4f));
+        Vector3 randomPosition = new Vector3(Random.Range(-bound, bound), 0.5f, Random.Range(-bound, bound));
         return randomPosition;
     }
 }
